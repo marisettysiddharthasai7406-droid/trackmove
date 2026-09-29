@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>TrackMove | Add Route</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+
+    /* =====================================================
+       ADD ROUTE PAGE
+    ===================================================== */
+
+    .add-route-page {
+        width: 100%;
+    }
+
+
+    .add-route-container {
+        width: 88%;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 45px 0 60px;
+    }
+
+
+    /* =====================================================
+       PAGE HEADER
+    ===================================================== */
+
+    .add-route-header {
+        margin-bottom: 30px;
+    }
+
+
+    .add-route-header h1 {
+        margin: 0 0 8px;
+        font-size: 34px;
+        color: #172033;
+    }
+
+
+    .add-route-header p {
+        margin: 0;
+        color: #667085;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       FORM CARD
+    ===================================================== */
+
+    .route-form-card {
+        background: #ffffff;
+        border: 1px solid #e1e8ef;
+        box-shadow: 0 4px 15px rgba(20, 50, 80, 0.06);
+        padding: 30px;
+    }
+
+
+    /* =====================================================
+       FORM SECTIONS
+    ===================================================== */
+
+    .route-form-section {
+        margin-bottom: 30px;
+    }
+
+
+    .route-form-section:last-child {
+        margin-bottom: 0;
+    }
+
+
+    .route-form-section h2 {
+        margin: 0 0 6px;
+        font-size: 20px;
+        color: #172033;
+    }
+
+
+    .route-form-section-description {
+        color: #667085;
+        font-size: 13px;
+        margin: 0 0 22px;
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       FORM GRID
+    ===================================================== */
+
+    .route-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+
+    .route-form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .route-form-group.full {
+        grid-column: 1 / -1;
+    }
+
+
+    .route-form-group label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #344054;
+        margin-bottom: 8px;
+    }
+
+
+    .route-required {
+        color: #d92d20;
+    }
+
+
+    .route-form-group input {
+        width: 100%;
+        padding: 12px 13px;
+        border: 1px solid #d0d5dd;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #172033;
+        background: #ffffff;
+        outline: none;
+        transition: 0.2s ease;
+    }
+
+
+    .route-form-group input:focus {
+        border-color: #1769aa;
+        box-shadow: 0 0 0 3px rgba(23, 105, 170, 0.10);
+    }
+
+
+    .route-form-group input::placeholder {
+        color: #98a2b3;
+    }
+
+
+    /* =====================================================
+       STOPS
+    ===================================================== */
+
+    .route-stops-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+
+    .route-stop-card {
+        border: 1px solid #dfe7ef;
+        background: #fbfdff;
+        padding: 20px;
+    }
+
+
+    .route-stop-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 16px;
+    }
+
+
+    .route-stop-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1769aa;
+    }
+
+
+    .route-stop-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 15px;
+    }
+
+
+    .route-remove-stop {
+        border: none;
+        background: #fff0f0;
+        color: #d92d20;
+        padding: 7px 11px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+
+    .route-remove-stop:hover {
+        background: #ffe1e1;
+    }
+
+
+    /* =====================================================
+       ADD STOP
+    ===================================================== */
+
+    .route-add-stop-btn {
+        margin-top: 15px;
+        border: 1px dashed #1769aa;
+        background: #f0f8ff;
+        color: #1769aa;
+        padding: 11px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+
+
+    .route-add-stop-btn:hover {
+        background: #e5f3ff;
+    }
+
+
+    /* =====================================================
+       INFO BOX
+    ===================================================== */
+
+    .route-info-box {
+        background: #f0f8ff;
+        border-left: 4px solid #1769aa;
+        padding: 14px 16px;
+        margin-top: 20px;
+        color: #344054;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       FORM ACTIONS
+    ===================================================== */
+
+    .route-form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding-top: 25px;
+        border-top: 1px solid #e5eaf0;
+    }
+
+
+    .route-form-btn {
+        display: inline-block;
+        border: none;
+        text-decoration: none;
+        cursor: pointer;
+        padding: 11px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 5px;
+        transition: 0.2s ease;
+    }
+
+
+    .route-form-btn-primary {
+        background: #1769aa;
+        color: #ffffff;
+    }
+
+
+    .route-form-btn-primary:hover {
+        background: #12558b;
+    }
+
+
+    .route-form-btn-secondary {
+        background: #eef4f8;
+        color: #344054;
+    }
+
+
+    .route-form-btn-secondary:hover {
+        background: #e1e9ef;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 800px) {
+
+        .route-stop-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+        .add-route-container {
+            width: 94%;
+            padding-top: 35px;
+        }
+
+
+        .route-form-card {
+            padding: 20px;
+        }
+
+
+        .route-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+
+        .route-form-group.full {
+            grid-column: auto;
+        }
+
+
+        .route-stop-header {
+            align-items: flex-start;
+        }
+
+
+        .route-form-actions {
+            flex-direction: column;
+        }
+
+
+        .route-form-actions .route-form-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+
+        .add-route-header h1 {
+            font-size: 28px;
+        }
+
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<header class="navbar">
+
+<!-- TRACKMOVE LOGO -->
+
+<a href="{{ url_for('home') }}" class="logo">
+
+    <div class="logo-icon">
+        TM
+    </div>
+
+    <span>
+        TrackMove
+    </span>
+
+</a>
+
+
+
+<!-- NAVIGATION -->
+
+<nav>
+
+    <a href="{{ url_for('home') }}">
+        Home
+    </a>
+
+    <a href="{{ url_for('dashboard') }}">
+        Dashboard
+    </a>
+
+    <a href="{{ url_for('track') }}">
+        Track Bus
+    </a>
+
+    <a href="{{ url_for('routes') }}">
+        Routes
+    </a>
+
+    <a href="{{ url_for('admin') }}" class="active">
+        Admin
+    </a>
+
+</nav>
+
+
+
+<!-- LOGOUT -->
+
+<div class="nav-buttons">
+
+    <a href="{{ url_for('logout') }}"
+       class="login-btn">
+
+        Logout
+
+    </a>
+
+</div>
+
+</header>
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="add-route-page">
+
+<div class="add-route-container">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="add-route-header">
+
+        <h1>
+            Add New Route
+        </h1>
+
+        <p>
+            Create a route and add all stops used by the bus.
+        </p>
+
+    </div>
+
+
+
+    <!-- =================================================
+         FORM CARD
+    ================================================== -->
+
+    <div class="route-form-card">
+
+
+        <form method="POST"
+              action="{{ url_for('add_route') }}"
+              id="routeForm">
+
+
+
+            <!-- =================================================
+                 ROUTE DETAILS
+            ================================================== -->
+
+            <div class="route-form-section">
+
+
+                <h2>
+                    Route Details
+                </h2>
+
+
+                <p class="route-form-section-description">
+
+                    Enter the basic information for the new
+                    transport route.
+
+                </p>
+
+
+
+                <div class="route-form-grid">
+
+
+                    <!-- ROUTE NUMBER -->
+
+                    <div class="route-form-group">
+
+                        <label for="route_number">
+
+                            Route Number
+                            <span class="route-required">*</span>
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="route_number"
+                            name="route_number"
+                            placeholder="Example: TM-R02"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- ROUTE NAME -->
+
+                    <div class="route-form-group">
+
+                        <label for="route_name">
+
+                            Route Name
+                            <span class="route-required">*</span>
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="route_name"
+                            name="route_name"
+                            placeholder="Example: Tirupati to Chandragiri"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- START LOCATION -->
+
+                    <div class="route-form-group">
+
+                        <label for="start_location">
+
+                            Start Location
+                            <span class="route-required">*</span>
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="start_location"
+                            name="start_location"
+                            placeholder="Example: Tirupati Bus Stand"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- DESTINATION -->
+
+                    <div class="route-form-group">
+
+                        <label for="destination">
+
+                            Destination
+                            <span class="route-required">*</span>
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="destination"
+                            name="destination"
+                            placeholder="Example: Chandragiri"
+                            required>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ROUTE STOPS
+            ================================================== -->
+
+            <div class="route-form-section">
+
+
+                <h2>
+                    Route Stops
+                </h2>
+
+
+                <p class="route-form-section-description">
+
+                    Add at least two stops. Enter the name and
+                    GPS coordinates for each stop.
+
+                </p>
+
+
+
+                <div class="route-stops-container"
+                     id="stopsContainer">
+
+
+
+                    <!-- =================================================
+                         STOP 1
+                    ================================================== -->
+
+                    <div class="route-stop-card">
+
+
+                        <div class="route-stop-header">
+
+
+                            <div class="route-stop-title">
+
+                                Stop 1
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="route-stop-grid">
+
+
+                            <!-- STOP NAME -->
+
+                            <div class="route-form-group">
+
+                                <label>
+
+                                    Stop Name
+                                    <span class="route-required">*</span>
+
+                                </label>
+
+
+                                <input
+                                    type="text"
+                                    name="stop_name[]"
+                                    placeholder="Example: Tirupati Bus Stand"
+                                    required>
+
+                            </div>
+
+
+
+                            <!-- LATITUDE -->
+
+                            <div class="route-form-group">
+
+                                <label>
+
+                                    Latitude
+                                    <span class="route-required">*</span>
+
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    name="latitude[]"
+                                    step="any"
+                                    min="-90"
+                                    max="90"
+                                    placeholder="13.6288"
+                                    required>
+
+                            </div>
+
+
+
+                            <!-- LONGITUDE -->
+
+                            <div class="route-form-group">
+
+                                <label>
+
+                                    Longitude
+                                    <span class="route-required">*</span>
+
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    name="longitude[]"
+                                    step="any"
+                                    min="-180"
+                                    max="180"
+                                    placeholder="79.4192"
+                                    required>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         STOP 2
+                    ================================================== -->
+
+                    <div class="route-stop-card">
+
+
+                        <div class="route-stop-header">
+
+
+                            <div class="route-stop-title">
+
+                                Stop 2
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="route-stop-grid">
+
+
+                            <!-- STOP NAME -->
+
+                            <div class="route-form-group">
+
+                                <label>
+
+                                    Stop Name
+                                    <span class="route-required">*</span>
+
+                                </label>
+
+
+                                <input
+                                    type="text"
+                                    name="stop_name[]"
+                                    placeholder="Example: Railway Station"
+                                    required>
+
+                            </div>
+
+
+
+                            <!-- LATITUDE -->
+
+                            <div class="route-form-group">
+
+                                <label>
+
+                                    Latitude
+                                    <span class="route-required">*</span>
+
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    name="latitude[]"
+                                    step="any"
+                                    min="-90"
+                                    max="90"
+                                    placeholder="13.6288"
+                                    required>
+
+                            </div>
+
+
+
+                            <!-- LONGITUDE -->
+
+                            <div class="route-form-group">
+
+                                <label>
+
+                                    Longitude
+                                    <span class="route-required">*</span>
+
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    name="longitude[]"
+                                    step="any"
+                                    min="-180"
+                                    max="180"
+                                    placeholder="79.4192"
+                                    required>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ADD STOP BUTTON -->
+
+                <button type="button"
+                        class="route-add-stop-btn"
+                        onclick="addStop()">
+
+                    + Add Another Stop
+
+                </button>
+
+
+
+                <!-- GPS INFORMATION -->
+
+                <div class="route-info-box">
+
+                    <strong>
+                        GPS Coordinates:
+                    </strong>
+
+                    Latitude should be between -90 and 90.
+                    Longitude should be between -180 and 180.
+                    You can get coordinates from Google Maps or
+                    another map service.
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FORM ACTIONS
+            ================================================== -->
+
+            <div class="route-form-actions">
+
+
+                <!-- CANCEL -->
+
+                <a href="{{ url_for('admin') }}"
+                   class="route-form-btn route-form-btn-secondary">
+
+                    Cancel
+
+                </a>
+
+
+
+                <!-- CREATE ROUTE -->
+
+                <button type="submit"
+                        class="route-form-btn route-form-btn-primary">
+
+                    Create Route
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+</main>
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+<div class="footer-main">
+
+
+    <!-- BRAND -->
+
+    <div class="footer-brand">
+
+
+        <a href="{{ url_for('home') }}" class="logo">
+
+            <div class="logo-icon">
+                TM
+            </div>
+
+            <span>
+                TrackMove
+            </span>
+
+        </a>
+
+
+        <p>
+
+            A public transport tracking platform
+            designed to make everyday travel
+            simpler and smarter.
+
+        </p>
+
+
+    </div>
+
+
+
+    <!-- PLATFORM -->
+
+    <div class="footer-column">
+
+
+        <h4>
+            Platform
+        </h4>
+
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+
+        <a href="{{ url_for('track') }}">
+            Track Bus
+        </a>
+
+
+        <a href="{{ url_for('routes') }}">
+            Routes
+        </a>
+
+
+    </div>
+
+
+
+    <!-- ACCOUNT -->
+
+    <div class="footer-column">
+
+
+        <h4>
+            Account
+        </h4>
+
+
+        <a href="{{ url_for('profile') }}">
+            Profile
+        </a>
+
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+
+    </div>
+
+
+
+    <!-- INFORMATION -->
+
+    <div class="footer-column">
+
+
+        <h4>
+            Information
+        </h4>
+
+
+        <a href="{{ url_for('contact') }}">
+            Contact Us
+        </a>
+
+
+        <a href="{{ url_for('privacy') }}">
+            Privacy Policy
+        </a>
+
+
+        <a href="{{ url_for('terms') }}">
+            Terms of Service
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- COPYRIGHT -->
+
+<div class="footer-bottom">
+
+
+    <p>
+        © 2026 TrackMove. All rights reserved.
+    </p>
+
+
+    <p>
+        Public Transport Tracking System
+    </p>
+
+
+</div>
+
+</footer>
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+    let stopCount = 2;
+
+
+    /* =====================================================
+       ADD STOP
+    ===================================================== */
+
+    function addStop() {
+
+        stopCount++;
+
+        const container =
+            document.getElementById("stopsContainer");
+
+
+        const stopCard =
+            document.createElement("div");
+
+
+        stopCard.className =
+            "route-stop-card";
+
+
+        stopCard.innerHTML = `
+
+            <div class="route-stop-header">
+
+                <div class="route-stop-title">
+                    Stop ${stopCount}
+                </div>
+
+                <button
+                    type="button"
+                    class="route-remove-stop"
+                    onclick="removeStop(this)">
+
+                    Remove
+
+                </button>
+
+            </div>
+
+
+            <div class="route-stop-grid">
+
+
+                <div class="route-form-group">
+
+                    <label>
+
+                        Stop Name
+                        <span class="route-required">*</span>
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        name="stop_name[]"
+                        placeholder="Enter stop name"
+                        required>
+
+                </div>
+
+
+                <div class="route-form-group">
+
+                    <label>
+
+                        Latitude
+                        <span class="route-required">*</span>
+
+                    </label>
+
+
+                    <input
+                        type="number"
+                        name="latitude[]"
+                        step="any"
+                        min="-90"
+                        max="90"
+                        placeholder="13.6288"
+                        required>
+
+                </div>
+
+
+                <div class="route-form-group">
+
+                    <label>
+
+                        Longitude
+                        <span class="route-required">*</span>
+
+                    </label>
+
+
+                    <input
+                        type="number"
+                        name="longitude[]"
+                        step="any"
+                        min="-180"
+                        max="180"
+                        placeholder="79.4192"
+                        required>
+
+                </div>
+
+
+            </div>
+
+        `;
+
+
+        container.appendChild(stopCard);
+
+
+        updateStopNumbers();
+
+    }
+
+
+
+    /* =====================================================
+       REMOVE STOP
+    ===================================================== */
+
+    function removeStop(button) {
+
+        const container =
+            document.getElementById("stopsContainer");
+
+
+        const stopCards =
+            container.querySelectorAll(
+                ".route-stop-card"
+            );
+
+
+        if (stopCards.length <= 2) {
+
+            alert(
+                "A route must have at least 2 stops."
+            );
+
+            return;
+
+        }
+
+
+        button
+            .closest(".route-stop-card")
+            .remove();
+
+
+        updateStopNumbers();
+
+    }
+
+
+
+    /* =====================================================
+       UPDATE STOP NUMBERS
+    ===================================================== */
+
+    function updateStopNumbers() {
+
+        const stopCards =
+            document.querySelectorAll(
+                "#stopsContainer .route-stop-card"
+            );
+
+
+        stopCards.forEach((card, index) => {
+
+            const title =
+                card.querySelector(
+                    ".route-stop-title"
+                );
+
+
+            title.textContent =
+                "Stop " + (index + 1);
+
+        });
+
+
+        stopCount =
+            stopCards.length;
+
+    }
+
+
+
+    /* =====================================================
+       FORM VALIDATION
+    ===================================================== */
+
+    document
+        .getElementById("routeForm")
+        .addEventListener(
+            "submit",
+            function(event) {
+
+                const stopNames =
+                    document.querySelectorAll(
+                        'input[name="stop_name[]"]'
+                    );
+
+
+                if (stopNames.length < 2) {
+
+                    event.preventDefault();
+
+
+                    alert(
+                        "Please add at least 2 stops."
+                    );
+
+
+                    return;
+
+                }
+
+            }
+        );
+
+</script>
+
+</body>
+
+</html>

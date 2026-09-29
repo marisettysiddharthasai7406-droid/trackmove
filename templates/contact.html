@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Contact Us | TrackMove</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<header class="navbar">
+
+    <a href="/" class="logo">
+
+        <div class="logo-icon">
+            TM
+        </div>
+
+        <span>
+            TrackMove
+        </span>
+
+    </a>
+
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/track">
+            Track Bus
+        </a>
+
+        <a href="/contact" class="active">
+            Contact
+        </a>
+
+    </nav>
+
+
+    <div class="nav-buttons">
+
+        <a href="/profile"
+           class="login-btn">
+
+            Profile
+
+        </a>
+
+        <a href="/logout"
+           class="login-btn">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     CONTACT CONTENT
+===================================================== -->
+
+<main>
+
+    <section class="contact-page">
+
+        <div class="contact-container">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="contact-header">
+
+                <div class="contact-icon-large">
+                    ✉
+                </div>
+
+                <div>
+
+                    <h1>
+                        Contact Us
+                    </h1>
+
+                    <p>
+                        Have a question or need help?
+                        We're here to help you.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CONTACT CONTENT -->
+
+            <div class="contact-content">
+
+
+                <!-- CONTACT INFORMATION -->
+
+                <div class="contact-information">
+
+                    <h2>
+                        Get in Touch
+                    </h2>
+
+                    <p class="contact-intro">
+
+                        If you have any questions, suggestions,
+                        or feedback about TrackMove, feel free
+                        to contact us.
+
+                    </p>
+
+
+                    <div class="contact-info-list">
+
+
+                        <!-- EMAIL -->
+
+                        <div class="contact-info-item">
+
+                            <div class="contact-info-icon">
+                                ✉
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Email
+                                </span>
+
+                                <strong>
+                                    support@trackmove.com
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- PHONE -->
+
+                        <div class="contact-info-item">
+
+                            <div class="contact-info-icon">
+                                ☎
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Phone
+                                </span>
+
+                                <strong>
+                                    +91 90000 00000
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- LOCATION -->
+
+                        <div class="contact-info-item">
+
+                            <div class="contact-info-icon">
+                                ⌖
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Location
+                                </span>
+
+                                <strong>
+                                    Andhra Pradesh, India
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- MESSAGE FORM -->
+
+                <div class="contact-card">
+
+                    <h2>
+                        Send us a Message
+                    </h2>
+
+                    <p class="contact-card-description">
+
+                        Fill out the form below and
+                        we'll get back to you.
+
+                    </p>
+
+
+                    <form>
+
+
+                        <div class="contact-form-group">
+
+                            <label for="name">
+                                Your Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Enter your name"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <div class="contact-form-group">
+
+                            <label for="email">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <div class="contact-form-group">
+
+                            <label for="subject">
+                                Subject
+                            </label>
+
+                            <input
+                                type="text"
+                                id="subject"
+                                name="subject"
+                                placeholder="Enter subject"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <div class="contact-form-group">
+
+                            <label for="message">
+                                Message
+                            </label>
+
+                            <textarea
+                                id="message"
+                                name="message"
+                                rows="5"
+                                placeholder="Write your message..."
+                                required
+                            ></textarea>
+
+                        </div>
+
+
+
+                        <button
+                            type="submit"
+                            class="contact-button">
+
+                            Send Message
+
+                        </button>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="footer-main">
+
+
+        <div class="footer-brand">
+
+            <a href="/" class="logo">
+
+                <div class="logo-icon">
+                    TM
+                </div>
+
+                <span>
+                    TrackMove
+                </span>
+
+            </a>
+
+            <p>
+
+                A public transport tracking platform
+                designed to make everyday travel
+                simpler and smarter.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="footer-column">
+
+            <h4>
+                Platform
+            </h4>
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/track">
+                Track Bus
+            </a>
+
+            <a href="/routes">
+                Routes
+            </a>
+
+        </div>
+
+
+
+        <div class="footer-column">
+
+            <h4>
+                Account
+            </h4>
+
+            <a href="/profile">
+                Profile
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+
+
+        <div class="footer-column">
+
+            <h4>
+                Information
+            </h4>
+
+            <a href="/contact">
+                Contact Us
+            </a>
+
+            <a href="/privacy">
+                Privacy Policy
+            </a>
+
+            <a href="/terms">
+                Terms of Service
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 TrackMove. All rights reserved.
+        </p>
+
+        <p>
+            Public Transport Tracking System
+        </p>
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>

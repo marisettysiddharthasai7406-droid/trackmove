@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | TrackMove</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+
+    <style>
+
+        :root {
+            --primary: #1769aa;
+            --primary-dark: #0d4775;
+            --text: #16263d;
+            --muted: #718096;
+            --border: #e3ebf2;
+            --surface: #ffffff;
+            --background: #f4f8fc;
+
+            --green: #16865b;
+            --green-bg: #e9f8f0;
+
+            --purple: #6842a5;
+            --purple-bg: #f0ecff;
+
+            --amber: #a76508;
+            --amber-bg: #fff5df;
+
+            --red: #c24141;
+            --red-bg: #fff1f1;
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+        }
+
+
+        /* =====================================================
+           DASHBOARD
+        ===================================================== */
+
+        .dashboard-page {
+            min-height: calc(100vh - 88px);
+            padding: 35px 6% 60px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+
+        .dashboard-header h1 {
+            margin: 0 0 8px;
+            font-size: clamp(25px, 3vw, 33px);
+            color: var(--text);
+        }
+
+
+        .dashboard-header p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+
+        .live-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            padding: 11px 15px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #49627d;
+            font-size: 13px;
+        }
+
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow:
+                0 0 0 4px rgba(22, 134, 91, 0.12);
+        }
+
+
+        .status-dot.offline {
+            background: #a0aab6;
+            box-shadow:
+                0 0 0 4px rgba(160, 170, 182, 0.14);
+        }
+
+
+        /* =====================================================
+           SUMMARY CARDS
+        ===================================================== */
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+
+        .dashboard-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-width: 0;
+
+            padding: 22px 19px;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+
+            box-shadow:
+                0 3px 12px rgba(34, 64, 95, 0.025);
+        }
+
+
+        .card-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 48px;
+            height: 48px;
+
+            flex-shrink: 0;
+
+            border-radius: 12px;
+            background: #eaf4fb;
+
+            font-size: 22px;
+        }
+
+
+        .dashboard-card:nth-child(2) .card-icon {
+            background: #e9f8f0;
+        }
+
+
+        .dashboard-card:nth-child(3) .card-icon {
+            background: #f0ecff;
+        }
+
+
+        .dashboard-card:nth-child(4) .card-icon {
+            background: #fff5df;
+        }
+
+
+        .dashboard-card h3 {
+            margin: 0 0 6px;
+            color: #607086;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        .dashboard-card strong {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: var(--text);
+
+            font-size: 28px;
+            line-height: 1;
+        }
+
+
+        .dashboard-card p {
+            margin: 0;
+
+            color: #8995a5;
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           PANEL
+        ===================================================== */
+
+        .dashboard-panel {
+            min-width: 0;
+
+            margin-bottom: 22px;
+            padding: 24px;
+
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+            border-radius: 15px;
+
+            box-shadow:
+                0 3px 12px rgba(34, 64, 95, 0.025);
+        }
+
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 14px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .panel-header h2 {
+            margin: 0 0 6px;
+
+            color: #1d3048;
+
+            font-size: 19px;
+        }
+
+
+        .panel-header p {
+            margin: 0;
+
+            color: #7a8798;
+
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        .panel-header a {
+            flex-shrink: 0;
+
+            color: var(--primary);
+
+            font-size: 13px;
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+
+        .panel-header a:hover {
+            color: var(--primary-dark);
+        }
+
+
+        /* =====================================================
+           BUS GRID
+        ===================================================== */
+
+        .all-buses-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 16px;
+        }
+
+
+        .fleet-card {
+            min-width: 0;
+
+            padding: 18px;
+
+            border: 1px solid #e3ebf2;
+            border-radius: 13px;
+
+            background: #fbfdff;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .fleet-card:hover {
+            border-color: #cbdde9;
+
+            box-shadow:
+                0 8px 22px rgba(23, 105, 170, 0.07);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           BUS HEADER
+        ===================================================== */
+
+        .fleet-card-header {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .fleet-bus-number {
+            color: var(--primary);
+
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+
+        .fleet-badge {
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background: var(--green-bg);
+            color: var(--green);
+
+            font-size: 10px;
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+
+        .fleet-badge.active {
+            background: #eaf4fb;
+            color: var(--primary);
+        }
+
+
+        .fleet-badge.return {
+            background: var(--purple-bg);
+            color: var(--purple);
+        }
+
+
+        .fleet-badge.reached {
+            background: var(--green-bg);
+            color: var(--green);
+        }
+
+
+        /* =====================================================
+           ROUTE
+        ===================================================== */
+
+        .fleet-route {
+            margin-bottom: 15px;
+
+            color: #273b52;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            line-height: 1.5;
+        }
+
+
+        .fleet-route small {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #7b8999;
+
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+
+        /* =====================================================
+           DETAILS
+        ===================================================== */
+
+        .fleet-details {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 9px;
+        }
+
+
+        .fleet-detail {
+            min-width: 0;
+
+            padding: 11px;
+
+            background: white;
+
+            border: 1px solid #e8edf2;
+            border-radius: 9px;
+        }
+
+
+        .fleet-detail span {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #8491a1;
+
+            font-size: 10px;
+        }
+
+
+        .fleet-detail strong {
+            display: block;
+
+            color: #273b52;
+
+            font-size: 12px;
+
+            line-height: 1.4;
+
+            overflow-wrap: anywhere;
+        }
+
+
+        /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+        .fleet-progress {
+            margin-top: 14px;
+        }
+
+
+        .fleet-progress-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 6px;
+
+            color: #78879a;
+
+            font-size: 10px;
+        }
+
+
+        .fleet-progress-header strong {
+            color: var(--primary);
+        }
+
+
+        .fleet-progress-bar {
+            width: 100%;
+            height: 7px;
+
+            overflow: hidden;
+
+            background: #e7edf2;
+
+            border-radius: 20px;
+        }
+
+
+        .fleet-progress-fill {
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #1769aa,
+                    #13a58b
+                );
+
+            border-radius: inherit;
+
+            transition:
+                width 0.5s ease;
+        }
+
+
+        /* =====================================================
+           ETA
+        ===================================================== */
+
+        .eta-text {
+            margin-top: 8px;
+
+            color: #718096;
+
+            font-size: 11px;
+        }
+
+
+        .eta-text strong {
+            color: #1769aa;
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-fleet {
+            padding: 35px 20px;
+
+            text-align: center;
+
+            color: #8995a5;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           SERVICE MESSAGE
+        ===================================================== */
+
+        .service-message {
+            padding: 15px 17px;
+
+            border: 1px solid #d9eee2;
+            border-radius: 10px;
+
+            background: #f3faf6;
+
+            color: #46705a;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        .service-message.error {
+            border-color: #f1d5d5;
+
+            background: var(--red-bg);
+
+            color: var(--red);
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .dashboard-page {
+                padding-right: 4%;
+                padding-left: 4%;
+            }
+
+
+            .dashboard-cards {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+
+            .all-buses-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .dashboard-page {
+                padding: 24px 5% 40px;
+            }
+
+
+            .dashboard-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+
+            .dashboard-cards {
+                grid-template-columns: 1fr 1fr;
+
+                gap: 10px;
+            }
+
+
+            .dashboard-card {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 12px;
+
+                padding: 16px;
+            }
+
+
+            .dashboard-card strong {
+                font-size: 25px;
+            }
+
+
+            .dashboard-panel {
+                padding: 17px;
+            }
+
+
+            .fleet-details {
+                grid-template-columns: 1fr;
+            }
+
+
+            .panel-header {
+                align-items: flex-start;
+            }
+
+        }
+
+
+        @media (max-width: 380px) {
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<header class="navbar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            TM
+        </div>
+
+        <span>
+            TrackMove
+        </span>
+
+    </div>
+
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/dashboard"
+           class="active">
+
+            Dashboard
+
+        </a>
+
+        <a href="/track">
+            Track Bus
+        </a>
+
+        <a href="/routes">
+            Routes
+        </a>
+
+    </nav>
+
+
+    <div class="nav-buttons">
+
+        <a href="/logout"
+           class="login-btn">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     MAIN DASHBOARD
+========================================================= -->
+
+<main class="dashboard-page">
+
+
+    <!-- HEADER -->
+
+    <section class="dashboard-header">
+
+        <div>
+
+            <h1>
+                Welcome, {{ name }}
+            </h1>
+
+            <p>
+                Monitor all bus journeys, live locations and travel status.
+            </p>
+
+        </div>
+
+
+        <div class="live-status">
+
+            <span
+                class="status-dot"
+                id="connectionDot">
+            </span>
+
+
+            <span id="connectionText">
+                Connecting to live data...
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SUMMARY CARDS
+    ===================================================== -->
+
+    <section class="dashboard-cards">
+
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                🚌
+            </div>
+
+            <div>
+
+                <h3>
+                    Live Buses
+                </h3>
+
+                <strong id="liveBuses">
+                    —
+                </strong>
+
+                <p>
+                    Currently travelling
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                🛣️
+            </div>
+
+            <div>
+
+                <h3>
+                    Active Routes
+                </h3>
+
+                <strong id="activeRoutes">
+                    —
+                </strong>
+
+                <p>
+                    Routes with active buses
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                📍
+            </div>
+
+            <div>
+
+                <h3>
+                    Active Trips
+                </h3>
+
+                <strong id="activeTrips">
+                    —
+                </strong>
+
+                <p>
+                    Journeys in progress
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                🕐
+            </div>
+
+            <div>
+
+                <h3>
+                    Available Buses
+                </h3>
+
+                <strong id="availableBuses">
+                    —
+                </strong>
+
+                <p>
+                    Waiting for their next trip
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ALL BUSES
+    ===================================================== -->
+
+    <section class="dashboard-panel">
+
+
+        <div class="panel-header">
+
+            <div>
+
+                <h2>
+                    All Buses
+                </h2>
+
+                <p>
+                    Live status and journey information for every registered bus.
+                </p>
+
+            </div>
+
+
+            <a href="/track">
+                View Map →
+            </a>
+
+        </div>
+
+
+        <div
+            class="all-buses-grid"
+            id="allBusesGrid">
+
+            <div class="empty-fleet">
+                Loading bus information...
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         TRANSPORT INFORMATION
+    ===================================================== -->
+
+    <section class="dashboard-panel">
+
+
+        <div class="panel-header">
+
+            <div>
+
+                <h2>
+                    Transport Information
+                </h2>
+
+                <p>
+                    Current TrackMove fleet information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="service-message"
+            id="serviceMessage"
+            aria-live="polite">
+
+            Connecting to TrackMove live data...
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+"use strict";
+
+
+let dashboardRefreshInProgress = false;
+
+
+/* =========================================================
+   TEXT HELPER
+========================================================= */
+
+function setText(id, value) {
+
+    const element =
+        document.getElementById(id);
+
+
+    if (!element) {
+        return;
+    }
+
+
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+
+        element.textContent = "—";
+
+    } else {
+
+        element.textContent =
+            String(value);
+
+    }
+
+}
+
+
+
+/* =========================================================
+   CONNECTION STATUS
+========================================================= */
+
+function setConnectionStatus(
+    connected,
+    message
+) {
+
+    const dot =
+        document.getElementById(
+            "connectionDot"
+        );
+
+
+    if (dot) {
+
+        dot.classList.toggle(
+            "offline",
+            !connected
+        );
+
+    }
+
+
+    setText(
+        "connectionText",
+        message
+    );
+
+}
+
+
+
+/* =========================================================
+   DIRECTION
+========================================================= */
+
+function getDirectionText(bus) {
+
+    if (
+        bus.trip_direction === "RETURN"
+    ) {
+
+        return "Return journey";
+
+    }
+
+
+    return "Outbound journey";
+
+}
+
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function getStatusText(bus) {
+
+    if (
+        bus.destination_reached === true
+    ) {
+
+        return "Destination reached";
+
+    }
+
+
+    if (
+        bus.status === "Active"
+    ) {
+
+        if (
+            bus.trip_direction === "RETURN"
+        ) {
+
+            return "Active · Returning";
+
+        }
+
+
+        return "Active · Outbound";
+
+    }
+
+
+    return "Available";
+
+}
+
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+function getProgress(bus) {
+
+    let progress =
+        Number(
+            bus.progress_percentage
+        );
+
+
+    if (
+        Number.isNaN(progress)
+    ) {
+
+        progress = 0;
+
+    }
+
+
+    return Math.max(
+        0,
+        Math.min(
+            100,
+            progress
+        )
+    );
+
+}
+
+
+
+/* =========================================================
+   ETA
+========================================================= */
+
+function getEtaText(bus) {
+
+    if (
+        bus.destination_reached === true
+    ) {
+
+        return "Destination reached";
+
+    }
+
+
+    if (
+        bus.status !== "Active"
+    ) {
+
+        return "Waiting to start";
+
+    }
+
+
+    if (
+        bus.eta &&
+        bus.eta !== "N/A"
+    ) {
+
+        return bus.eta;
+
+    }
+
+
+    return "Calculating...";
+
+}
+
+
+
+/* =========================================================
+   CREATE DETAIL
+========================================================= */
+
+function createDetail(
+    label,
+    value
+) {
+
+    const box =
+        document.createElement(
+            "div"
+        );
+
+
+    box.className =
+        "fleet-detail";
+
+
+    const span =
+        document.createElement(
+            "span"
+        );
+
+
+    span.textContent =
+        label;
+
+
+    const strong =
+        document.createElement(
+            "strong"
+        );
+
+
+    strong.textContent =
+        value || "—";
+
+
+    box.append(
+        span,
+        strong
+    );
+
+
+    return box;
+
+}
+
+
+
+/* =========================================================
+   RENDER BUSES
+========================================================= */
+
+function renderAllBuses(buses) {
+
+
+    /* -----------------------------------------------------
+       SUMMARY
+    ----------------------------------------------------- */
+
+    const activeBuses =
+        buses.filter(
+            bus =>
+                bus.status === "Active"
+        );
+
+
+    const availableBuses =
+        buses.filter(
+            bus =>
+                bus.status !== "Active"
+        );
+
+
+    const activeRoutes =
+        new Set(
+            activeBuses
+                .map(
+                    bus =>
+                        bus.route_name ||
+                        bus.route_number ||
+                        bus.route_id
+                )
+                .filter(Boolean)
+        );
+
+
+    setText(
+        "liveBuses",
+        activeBuses.length
+    );
+
+
+    setText(
+        "activeTrips",
+        activeBuses.length
+    );
+
+
+    setText(
+        "activeRoutes",
+        activeRoutes.size
+    );
+
+
+    setText(
+        "availableBuses",
+        availableBuses.length
+    );
+
+
+
+    /* -----------------------------------------------------
+       GRID
+    ----------------------------------------------------- */
+
+    const grid =
+        document.getElementById(
+            "allBusesGrid"
+        );
+
+
+    if (!grid) {
+        return;
+    }
+
+
+    if (
+        buses.length === 0
+    ) {
+
+        grid.innerHTML =
+            '<div class="empty-fleet">' +
+            'No buses are registered yet.' +
+            '</div>';
+
+        return;
+    }
+
+
+    grid.replaceChildren();
+
+
+
+    /* -----------------------------------------------------
+       EACH BUS
+    ----------------------------------------------------- */
+
+    buses.forEach(
+        function(bus) {
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "fleet-card";
+
+
+
+            /* BUS HEADER */
+
+            const header =
+                document.createElement(
+                    "div"
+                );
+
+
+            header.className =
+                "fleet-card-header";
+
+
+            const busNumber =
+                document.createElement(
+                    "div"
+                );
+
+
+            busNumber.className =
+                "fleet-bus-number";
+
+
+            busNumber.textContent =
+                bus.bus_number ||
+                "Unknown";
+
+
+
+            const badge =
+                document.createElement(
+                    "span"
+                );
+
+
+            badge.className =
+                "fleet-badge";
+
+
+
+            if (
+                bus.destination_reached === true
+            ) {
+
+                badge.classList.add(
+                    "reached"
+                );
+
+            } else if (
+                bus.status === "Active"
+            ) {
+
+                badge.classList.add(
+                    "active"
+                );
+
+
+                if (
+                    bus.trip_direction ===
+                    "RETURN"
+                ) {
+
+                    badge.classList.add(
+                        "return"
+                    );
+
+                }
+
+            }
+
+
+            badge.textContent =
+                getStatusText(bus);
+
+
+            header.append(
+                busNumber,
+                badge
+            );
+
+
+
+            /* ROUTE */
+
+            const route =
+                document.createElement(
+                    "div"
+                );
+
+
+            route.className =
+                "fleet-route";
+
+
+            route.textContent =
+                (
+                    bus.start_location ||
+                    "Start"
+                ) +
+                " → " +
+                (
+                    bus.destination ||
+                    "Destination"
+                );
+
+
+            const direction =
+                document.createElement(
+                    "small"
+                );
+
+
+            direction.textContent =
+                getDirectionText(bus);
+
+
+            route.appendChild(
+                direction
+            );
+
+
+
+            /* DETAILS */
+
+            const details =
+                document.createElement(
+                    "div"
+                );
+
+
+            details.className =
+                "fleet-details";
+
+
+
+            let currentLocation =
+                "Location unavailable";
+
+
+            if (
+                bus.current_stop_name
+            ) {
+
+                currentLocation =
+                    bus.current_stop_name;
+
+            } else if (
+                bus.current_stop
+            ) {
+
+                currentLocation =
+                    "Stop " +
+                    bus.current_stop;
+
+            }
+
+
+
+            let nextStop =
+                bus.next_stop_name;
+
+
+            if (
+                !nextStop
+            ) {
+
+                if (
+                    bus.destination_reached === true
+                ) {
+
+                    nextStop =
+                        "Destination reached";
+
+                } else if (
+                    bus.status === "Active"
+                ) {
+
+                    nextStop =
+                        bus.destination ||
+                        "Calculating...";
+
+                } else {
+
+                    nextStop =
+                        "Waiting to start";
+
+                }
+
+            }
+
+
+
+            details.append(
+
+                createDetail(
+                    "Current Location",
+                    currentLocation
+                ),
+
+
+                createDetail(
+                    "Destination",
+                    bus.destination
+                ),
+
+
+                createDetail(
+                    "Direction",
+                    getDirectionText(bus)
+                ),
+
+
+                createDetail(
+                    "Next Stop",
+                    nextStop
+                )
+
+            );
+
+
+
+            /* PROGRESS */
+
+            const progressSection =
+                document.createElement(
+                    "div"
+                );
+
+
+            progressSection.className =
+                "fleet-progress";
+
+
+            const progressHeader =
+                document.createElement(
+                    "div"
+                );
+
+
+            progressHeader.className =
+                "fleet-progress-header";
+
+
+            const progressLabel =
+                document.createElement(
+                    "span"
+                );
+
+
+            progressLabel.textContent =
+                "Journey progress";
+
+
+            const progressValue =
+                document.createElement(
+                    "strong"
+                );
+
+
+            const progress =
+                getProgress(bus);
+
+
+            progressValue.textContent =
+                progress.toFixed(0) +
+                "%";
+
+
+            progressHeader.append(
+                progressLabel,
+                progressValue
+            );
+
+
+
+            const progressBar =
+                document.createElement(
+                    "div"
+                );
+
+
+            progressBar.className =
+                "fleet-progress-bar";
+
+
+            const progressFill =
+                document.createElement(
+                    "div"
+                );
+
+
+            progressFill.className =
+                "fleet-progress-fill";
+
+
+            progressFill.style.width =
+                progress +
+                "%";
+
+
+            progressBar.appendChild(
+                progressFill
+            );
+
+
+
+            progressSection.append(
+                progressHeader,
+                progressBar
+            );
+
+
+
+            /* ETA */
+
+            const eta =
+                document.createElement(
+                    "div"
+                );
+
+
+            eta.className =
+                "eta-text";
+
+
+            eta.innerHTML =
+                "ETA: <strong>" +
+                getEtaText(bus) +
+                "</strong>";
+
+
+
+            progressSection.appendChild(
+                eta
+            );
+
+
+
+            /* CARD */
+
+            card.append(
+                header,
+                route,
+                details,
+                progressSection
+            );
+
+
+            grid.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   FETCH JSON
+========================================================= */
+
+async function fetchJson(url) {
+
+
+    const response =
+        await fetch(
+            url,
+            {
+                headers: {
+                    "Accept":
+                        "application/json"
+                },
+
+                cache:
+                    "no-store"
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+
+    if (
+        !response.ok ||
+        data.success === false
+    ) {
+
+        throw new Error(
+            data.message ||
+            "Request failed"
+        );
+
+    }
+
+
+    return data;
+
+}
+
+
+
+/* =========================================================
+   UPDATE DASHBOARD
+========================================================= */
+
+async function updateDashboard() {
+
+
+    if (
+        dashboardRefreshInProgress
+    ) {
+
+        return;
+
+    }
+
+
+    dashboardRefreshInProgress =
+        true;
+
+
+    try {
+
+
+        const data =
+            await fetchJson(
+                "/api/buses"
+            );
+
+
+        const buses =
+            data.buses || [];
+
+
+        renderAllBuses(
+            buses
+        );
+
+
+        setConnectionStatus(
+            true,
+            "Live data connected"
+        );
+
+
+
+        /* SERVICE MESSAGE */
+
+        const message =
+            document.getElementById(
+                "serviceMessage"
+            );
+
+
+        if (message) {
+
+
+            message.classList.remove(
+                "error"
+            );
+
+
+            if (
+                buses.length === 0
+            ) {
+
+                message.textContent =
+                    "No buses are currently registered.";
+
+
+            } else {
+
+
+                const activeCount =
+                    buses.filter(
+                        bus =>
+                            bus.status ===
+                            "Active"
+                    ).length;
+
+
+                const availableCount =
+                    buses.filter(
+                        bus =>
+                            bus.status !==
+                            "Active"
+                    ).length;
+
+
+                if (
+                    activeCount > 0
+                ) {
+
+                    message.textContent =
+                        activeCount +
+                        " bus" +
+                        (
+                            activeCount === 1
+                                ? ""
+                                : "es"
+                        ) +
+                        " currently operating. " +
+                        availableCount +
+                        " bus" +
+                        (
+                            availableCount === 1
+                                ? ""
+                                : "es"
+                        ) +
+                        " available for their next journey.";
+
+
+                } else {
+
+                    message.textContent =
+                        "All registered buses are currently " +
+                        "available or waiting for their next journey.";
+
+                }
+
+            }
+
+        }
+
+
+    } catch (error) {
+
+
+        console.error(
+            "Dashboard refresh failed:",
+            error
+        );
+
+
+        setConnectionStatus(
+            false,
+            "Connection unavailable"
+        );
+
+
+        const grid =
+            document.getElementById(
+                "allBusesGrid"
+            );
+
+
+        if (grid) {
+
+            grid.innerHTML =
+                '<div class="empty-fleet">' +
+                'Unable to load bus information.' +
+                '</div>';
+
+        }
+
+
+        const message =
+            document.getElementById(
+                "serviceMessage"
+            );
+
+
+        if (message) {
+
+            message.classList.add(
+                "error"
+            );
+
+
+            message.textContent =
+                "Unable to retrieve live bus information. " +
+                "Please check that TrackMove is running and try again.";
+
+        }
+
+
+    } finally {
+
+        dashboardRefreshInProgress =
+            false;
+
+    }
+
+}
+
+
+
+/* =========================================================
+   START DASHBOARD
+========================================================= */
+
+updateDashboard();
+
+
+setInterval(
+    updateDashboard,
+    3000
+);
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Bus - TrackMove</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        /* =========================================
+           EDIT BUS PAGE
+        ========================================= */
+
+        .edit-bus-page {
+            min-height: calc(100vh - 160px);
+            padding: 45px 6% 70px;
+            background: #f5f8fc;
+        }
+
+        .edit-bus-container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .edit-bus-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .edit-bus-header h1 {
+            margin: 0;
+            color: #172033;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .edit-bus-header p {
+            margin-top: 10px;
+            color: #667085;
+            font-size: 15px;
+        }
+
+        .bus-form-card {
+            background: #ffffff;
+            border: 1px solid #e2eaf2;
+            box-shadow: 0 6px 24px rgba(23, 105, 170, 0.08);
+            padding: 32px;
+        }
+
+        .section-title {
+            margin: 0 0 22px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #eaf1f7;
+            color: #172033;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            color: #344054;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            border: 1px solid #d0d5dd;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #172033;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #1769aa;
+            box-shadow: 0 0 0 3px rgba(23, 105, 170, 0.10);
+        }
+
+        .form-help {
+            margin-top: 7px;
+            color: #667085;
+            font-size: 12px;
+        }
+
+        .current-bus-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-box {
+            padding: 17px;
+            border: 1px solid #e2eaf2;
+            background: #f8fbfd;
+        }
+
+        .info-box span {
+            display: block;
+            margin-bottom: 6px;
+            color: #667085;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .info-box strong {
+            color: #172033;
+            font-size: 16px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 10px;
+            padding-top: 25px;
+            border-top: 1px solid #e5eaf0;
+        }
+
+        .cancel-btn,
+        .save-btn {
+            padding: 12px 22px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            background: #eef2f6;
+            color: #344054;
+        }
+
+        .cancel-btn:hover {
+            background: #e2e8ee;
+        }
+
+        .save-btn {
+            background: #1769aa;
+            color: #ffffff;
+        }
+
+        .save-btn:hover {
+            background: #12578e;
+        }
+
+        @media (max-width: 768px) {
+
+            .edit-bus-page {
+                padding: 30px 4% 50px;
+            }
+
+            .bus-form-card {
+                padding: 22px;
+            }
+
+            .form-grid,
+            .current-bus-info {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .cancel-btn,
+            .save-btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================
+     NAVBAR
+========================================= -->
+
+<header class="navbar">
+
+    <a href="/" class="logo">
+
+        <div class="logo-icon">
+            TM
+        </div>
+
+        <span>
+            TrackMove
+        </span>
+
+    </a>
+
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/track">
+            Track Bus
+        </a>
+
+        <a href="/routes">
+            Routes
+        </a>
+
+        <a href="/admin" class="active">
+            Admin
+        </a>
+
+    </nav>
+
+
+    <div class="nav-buttons">
+
+        <a href="/logout" class="login-btn">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================
+     EDIT BUS PAGE
+========================================= -->
+
+<main class="edit-bus-page">
+
+    <div class="edit-bus-container">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="edit-bus-header">
+
+            <h1>
+                Edit Bus
+            </h1>
+
+            <p>
+                Update bus information and assign it to a route.
+            </p>
+
+        </div>
+
+
+        <!-- FORM CARD -->
+
+        <div class="bus-form-card">
+
+
+            <!-- CURRENT BUS INFORMATION -->
+
+            <div class="current-bus-info">
+
+                <div class="info-box">
+
+                    <span>
+                        Bus ID
+                    </span>
+
+                    <strong>
+                        {{ bus.id }}
+                    </strong>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span>
+                        Current Status
+                    </span>
+
+                    <strong>
+                        {{ bus.status }}
+                    </strong>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span>
+                        Current Stop
+                    </span>
+
+                    <strong>
+                        {{ bus.current_stop }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- FORM -->
+
+            <form
+                method="POST"
+                action="{{ url_for('edit_bus', bus_id=bus.id) }}"
+            >
+
+
+                <!-- BUS INFORMATION -->
+
+                <section class="form-section">
+
+                    <h2 class="section-title">
+                        Bus Information
+                    </h2>
+
+
+                    <div class="form-grid">
+
+
+                        <!-- BUS NUMBER -->
+
+                        <div class="form-group">
+
+                            <label for="bus_number">
+                                Bus Number
+                            </label>
+
+                            <input
+                                type="text"
+                                id="bus_number"
+                                name="bus_number"
+                                value="{{ bus.bus_number }}"
+                                placeholder="Example: TM-101"
+                                required
+                            >
+
+                            <div class="form-help">
+                                Enter a unique bus number.
+                            </div>
+
+                        </div>
+
+
+                        <!-- DRIVER -->
+
+                        <div class="form-group">
+
+                            <label for="driver_name">
+                                Driver Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="driver_name"
+                                name="driver_name"
+                                value="{{ bus.driver_name }}"
+                                placeholder="Driver name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- ROUTE -->
+
+                        <div class="form-group full-width">
+
+                            <label for="route_id">
+                                Route
+                            </label>
+
+                            <select
+                                id="route_id"
+                                name="route_id"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Route
+                                </option>
+
+                                {% for route in routes %}
+
+                                    <option
+                                        value="{{ route.id }}"
+                                        {% if route.id == bus.route_id %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ route.route_number }}
+                                        -
+                                        {{ route.route_name }}
+                                        ({{ route.start_location }}
+                                        →
+                                        {{ route.destination }})
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                            <div class="form-help">
+                                Select the route assigned to this bus.
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+                <!-- ACTION BUTTONS -->
+
+                <div class="form-actions">
+
+                    <a
+                        href="{{ url_for('admin') }}"
+                        class="cancel-btn"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer class="footer-main">
+
+
+    <div class="footer-brand">
+
+        <div class="logo footer-logo">
+
+            <div class="logo-icon">
+                TM
+            </div>
+
+            <span>
+                TrackMove
+            </span>
+
+        </div>
+
+
+        <p>
+            Smart public transport tracking system
+            designed to make daily travel easier,
+            faster and more reliable.
+        </p>
+
+    </div>
+
+
+    <div class="footer-column">
+
+        <h4>
+            Platform
+        </h4>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/track">
+            Track Bus
+        </a>
+
+        <a href="/routes">
+            Routes
+        </a>
+
+    </div>
+
+
+    <div class="footer-column">
+
+        <h4>
+            Account
+        </h4>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </div>
+
+
+    <div class="footer-column">
+
+        <h4>
+            Information
+        </h4>
+
+        <a href="/contact">
+            Contact Us
+        </a>
+
+        <a href="/privacy">
+            Privacy Policy
+        </a>
+
+        <a href="/terms">
+            Terms of Service
+        </a>
+
+    </div>
+
+</footer>
+
+
+<div class="footer-bottom">
+
+    <p>
+        © 2026 TrackMove. All rights reserved.
+    </p>
+
+    <p>
+        Public Transport Tracking System
+    </p>
+
+</div>
+
+</body>
+</html>
+

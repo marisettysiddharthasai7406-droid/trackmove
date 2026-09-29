@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | TrackMove</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="auth-page">
+
+        <div class="auth-box">
+
+            <div class="auth-logo">
+                TM
+            </div>
+
+            <h1>TrackMove</h1>
+
+            <h2>Create Account</h2>
+
+            <p>
+                Create your account to use TrackMove.
+            </p>
+
+
+            {% if error %}
+
+            <div class="error-message">
+                {{ error }}
+            </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Full Name"
+                    required>
+
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    required>
+
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    required>
+
+
+                <button type="submit">
+                    Create Account
+                </button>
+
+            </form>
+
+
+            <p class="account-link">
+
+                Already have an account?
+
+                <a href="/login">
+                    Login
+                </a>
+
+            </p>
+
+
+            <a href="/" class="back-home">
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

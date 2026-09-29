@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Routes | TrackMove</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<header class="navbar">
+
+
+    <!-- TRACKMOVE LOGO -->
+
+    <a href="/" class="logo">
+
+        <div class="logo-icon">
+            TM
+        </div>
+
+        <span>
+            TrackMove
+        </span>
+
+    </a>
+
+
+
+    <!-- NAVIGATION -->
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/track">
+            Track Bus
+        </a>
+
+        <a href="/routes" class="active">
+            Routes
+        </a>
+
+    </nav>
+
+
+
+    <!-- LOGOUT -->
+
+    <div class="nav-buttons">
+
+        <a href="/logout"
+           class="login-btn">
+
+            Logout
+
+        </a>
+
+    </div>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     ROUTES PAGE
+===================================================== -->
+
+<main>
+
+
+    <section class="routes-page">
+
+
+        <div class="routes-container">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="routes-header">
+
+
+                <div class="routes-icon">
+                    🚌
+                </div>
+
+
+                <div>
+
+                    <h1>
+                        Bus Routes
+                    </h1>
+
+                    <p>
+                        View routes and buses currently registered
+                        in TrackMove.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ROUTES LIST -->
+
+            <div class="routes-list">
+
+
+                {% if routes %}
+
+
+                    {% for route in routes %}
+
+
+                    <div class="route-card">
+
+
+                        <!-- ROUTE HEADER -->
+
+                        <div class="route-card-header">
+
+
+                            <div>
+
+                                <span class="route-number">
+                                    {{ route["route_number"] }}
+                                </span>
+
+                                <h2>
+                                    {{ route["route_name"] }}
+                                </h2>
+
+                            </div>
+
+
+                            <div class="route-bus-icon">
+                                🚌
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- ROUTE DETAILS -->
+
+                        <div class="route-details">
+
+
+                            <div class="route-detail">
+
+                                <span>
+                                    Starting Point
+                                </span>
+
+                                <strong>
+                                    {{ route["start_location"] }}
+                                </strong>
+
+                            </div>
+
+
+
+                            <div class="route-arrow">
+                                →
+                            </div>
+
+
+
+                            <div class="route-detail">
+
+                                <span>
+                                    Destination
+                                </span>
+
+                                <strong>
+                                    {{ route["destination"] }}
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             BUSES BELONGING TO THIS ROUTE
+                        ================================================== -->
+
+                        <div class="route-buses">
+
+
+                            <div class="route-buses-title">
+
+                                <h3>
+                                    Buses on this Route
+                                </h3>
+
+                                <span>
+                                    {{ route["buses"]|length }} bus(es)
+                                </span>
+
+                            </div>
+
+
+
+                            {% if route["buses"] %}
+
+
+                                <div class="route-bus-list">
+
+
+                                    {% for bus in route["buses"] %}
+
+
+                                    <div class="route-bus-item">
+
+
+                                        <div class="route-bus-info">
+
+
+                                            <div class="route-bus-number">
+
+                                                🚌 {{ bus["bus_number"] }}
+
+                                            </div>
+
+
+
+                                            {% if bus["driver_name"] %}
+
+                                            <div class="route-bus-driver">
+
+                                                Driver:
+                                                {{ bus["driver_name"] }}
+
+                                            </div>
+
+                                            {% endif %}
+
+
+                                        </div>
+
+
+
+                                        <!-- BUS STATUS -->
+
+                                        <div class="route-bus-status">
+
+
+                                            {% if bus["status"] == "Active" %}
+
+                                                <span class="bus-status active">
+
+                                                    ● Live
+
+                                                </span>
+
+
+                                            {% elif bus["status"] == "Available" %}
+
+                                                <span class="bus-status available">
+
+                                                    ● Available
+
+                                                </span>
+
+
+                                            {% else %}
+
+                                                <span class="bus-status">
+
+                                                    ● {{ bus["status"] }}
+
+                                                </span>
+
+                                            {% endif %}
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                    {% endfor %}
+
+
+                                </div>
+
+
+                            {% else %}
+
+
+                                <div class="route-no-buses">
+
+
+                                    <span>
+                                        🚌
+                                    </span>
+
+                                    <p>
+                                        No buses are currently registered
+                                        for this route.
+                                    </p>
+
+
+                                </div>
+
+
+                            {% endif %}
+
+
+                        </div>
+
+
+
+                        <!-- ROUTE FOOTER -->
+
+                        <div class="route-card-footer">
+
+
+                            <a href="/track"
+                               class="route-track-button">
+
+                                Track Bus
+
+                            </a>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    {% endfor %}
+
+
+                {% else %}
+
+
+                    <!-- NO ROUTES -->
+
+                    <div class="no-routes">
+
+
+                        <div class="no-routes-icon">
+                            🚌
+                        </div>
+
+
+                        <h2>
+                            No Routes Available
+                        </h2>
+
+
+                        <p>
+                            There are currently no bus routes available.
+                        </p>
+
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+
+    <div class="footer-main">
+
+
+        <!-- BRAND -->
+
+        <div class="footer-brand">
+
+
+            <a href="/" class="logo">
+
+                <div class="logo-icon">
+                    TM
+                </div>
+
+                <span>
+                    TrackMove
+                </span>
+
+            </a>
+
+
+            <p>
+
+                A public transport tracking platform
+                designed to make everyday travel
+                simpler and smarter.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!-- PLATFORM -->
+
+        <div class="footer-column">
+
+
+            <h4>
+                Platform
+            </h4>
+
+
+            <a href="/">
+                Home
+            </a>
+
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+
+            <a href="/track">
+                Track Bus
+            </a>
+
+
+            <a href="/routes">
+                Routes
+            </a>
+
+
+        </div>
+
+
+
+        <!-- ACCOUNT -->
+
+        <div class="footer-column">
+
+
+            <h4>
+                Account
+            </h4>
+
+
+            <a href="/profile">
+                Profile
+            </a>
+
+
+            <a href="/logout">
+                Logout
+            </a>
+
+
+        </div>
+
+
+
+        <!-- INFORMATION -->
+
+        <div class="footer-column">
+
+
+            <h4>
+                Information
+            </h4>
+
+
+            <a href="/contact">
+                Contact Us
+            </a>
+
+
+            <a href="/privacy">
+                Privacy Policy
+            </a>
+
+
+            <a href="/terms">
+                Terms of Service
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- COPYRIGHT -->
+
+    <div class="footer-bottom">
+
+
+        <p>
+            © 2026 TrackMove. All rights reserved.
+        </p>
+
+
+        <p>
+            Public Transport Tracking System
+        </p>
+
+
+    </div>
+
+
+</footer>
+
+
+</body>
+
+</html>

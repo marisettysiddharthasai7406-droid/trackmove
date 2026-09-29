@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Admin | TrackMove</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+
+    /* =====================================================
+       ADMIN PAGE
+    ===================================================== */
+
+    .admin-page {
+        width: 100%;
+    }
+
+
+    .admin-container {
+        width: 88%;
+        max-width: 1250px;
+        margin: 0 auto;
+        padding: 45px 0 60px;
+    }
+
+
+    /* =====================================================
+       PAGE HEADER
+    ===================================================== */
+
+    .admin-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 25px;
+        margin-bottom: 35px;
+    }
+
+
+    .admin-header-content h1 {
+        margin: 0 0 8px;
+        font-size: 34px;
+        color: #172033;
+    }
+
+
+    .admin-header-content p {
+        margin: 0;
+        color: #667085;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+
+    .admin-header-icon {
+        width: 58px;
+        height: 58px;
+        background: #eaf4fc;
+        border: 1px solid #d5e8f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        flex-shrink: 0;
+    }
+
+
+    /* =====================================================
+       ALERTS
+    ===================================================== */
+
+    .admin-alert {
+        padding: 14px 18px;
+        margin-bottom: 25px;
+        font-size: 14px;
+        line-height: 1.5;
+        border-left: 4px solid;
+    }
+
+
+    .admin-alert-error {
+        background: #fff5f5;
+        color: #b42318;
+        border-left-color: #d92d20;
+    }
+
+
+    .admin-alert-success {
+        background: #f0fdf4;
+        color: #027a48;
+        border-left-color: #12b76a;
+    }
+
+
+    /* =====================================================
+       SUMMARY CARDS
+    ===================================================== */
+
+    .admin-summary {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 35px;
+    }
+
+
+    .admin-summary-card {
+        background: #ffffff;
+        border: 1px solid #e1e8ef;
+        padding: 24px;
+        box-shadow: 0 4px 15px rgba(20, 50, 80, 0.05);
+    }
+
+
+    .admin-summary-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 12px;
+    }
+
+
+    .admin-summary-card h3 {
+        margin: 0;
+        font-size: 14px;
+        color: #667085;
+        font-weight: 600;
+    }
+
+
+    .admin-summary-icon {
+        font-size: 20px;
+    }
+
+
+    .admin-summary-number {
+        font-size: 30px;
+        font-weight: 700;
+        color: #1769aa;
+    }
+
+
+    /* =====================================================
+       MANAGEMENT SECTIONS
+    ===================================================== */
+
+    .admin-section {
+        background: #ffffff;
+        border: 1px solid #e1e8ef;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(20, 50, 80, 0.05);
+    }
+
+
+    .admin-section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 22px 24px;
+        border-bottom: 1px solid #e5eaf0;
+    }
+
+
+    .admin-section-title h2 {
+        margin: 0;
+        font-size: 21px;
+        color: #172033;
+    }
+
+
+    .admin-section-title p {
+        margin: 6px 0 0;
+        color: #667085;
+        font-size: 13px;
+    }
+
+
+    .admin-section-body {
+        padding: 24px;
+    }
+
+
+    /* =====================================================
+       BUTTONS
+    ===================================================== */
+
+    .admin-btn {
+        display: inline-block;
+        border: none;
+        text-decoration: none;
+        cursor: pointer;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 5px;
+        transition: 0.2s ease;
+    }
+
+
+    .admin-btn-primary {
+        background: #1769aa;
+        color: #ffffff;
+    }
+
+
+    .admin-btn-primary:hover {
+        background: #12558b;
+    }
+
+
+    .admin-btn-secondary {
+        background: #eef4f8;
+        color: #344054;
+    }
+
+
+    .admin-btn-secondary:hover {
+        background: #e1e9ef;
+    }
+
+
+    .admin-btn-success {
+        background: #0f9d58;
+        color: #ffffff;
+    }
+
+
+    .admin-btn-success:hover {
+        background: #0b7e46;
+    }
+
+
+    .admin-btn-warning {
+        background: #f79009;
+        color: #ffffff;
+    }
+
+
+    .admin-btn-warning:hover {
+        background: #dc7600;
+    }
+
+
+    .admin-btn-danger {
+        background: #d92d20;
+        color: #ffffff;
+    }
+
+
+    .admin-btn-danger:hover {
+        background: #b42318;
+    }
+
+
+    .admin-btn-small {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       ROUTE LIST
+    ===================================================== */
+
+    .admin-route-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+
+    .admin-route-card {
+        border: 1px solid #e1e8ef;
+        background: #fbfdff;
+        padding: 20px;
+    }
+
+
+    .admin-route-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+
+    .admin-route-number {
+        color: #1769aa;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+
+    .admin-route-card h3 {
+        margin: 0;
+        font-size: 18px;
+        color: #172033;
+    }
+
+
+    .admin-route-path {
+        color: #475467;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 18px;
+    }
+
+
+    .admin-route-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+
+    .admin-route-actions form {
+        display: inline;
+        margin: 0;
+    }
+
+
+    /* =====================================================
+       BUS TABLE
+    ===================================================== */
+
+    .admin-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+
+    .admin-table th {
+        background: #f7f9fb;
+        color: #475467;
+        font-size: 13px;
+        text-align: left;
+        padding: 14px;
+        border-bottom: 1px solid #e1e8ef;
+        white-space: nowrap;
+    }
+
+
+    .admin-table td {
+        padding: 15px 14px;
+        border-bottom: 1px solid #edf1f5;
+        font-size: 14px;
+        color: #344054;
+        vertical-align: middle;
+    }
+
+
+    .admin-table tr:last-child td {
+        border-bottom: none;
+    }
+
+
+    .admin-bus-number {
+        font-weight: 700;
+        color: #1769aa;
+    }
+
+
+    .admin-route-info {
+        line-height: 1.5;
+    }
+
+
+    .admin-route-info strong {
+        color: #172033;
+    }
+
+
+    .admin-route-info small {
+        color: #667085;
+    }
+
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    .admin-status {
+        display: inline-block;
+        padding: 6px 10px;
+        font-size: 12px;
+        font-weight: 700;
+        border-radius: 20px;
+        white-space: nowrap;
+    }
+
+
+    .admin-status-available {
+        background: #ecfdf3;
+        color: #027a48;
+    }
+
+
+    .admin-status-active {
+        background: #eff8ff;
+        color: #175cd3;
+    }
+
+
+    .admin-status-inactive {
+        background: #f2f4f7;
+        color: #475467;
+    }
+
+
+    .admin-status-default {
+        background: #fef0c7;
+        color: #b54708;
+    }
+
+
+    /* =====================================================
+       BUS ACTIONS
+    ===================================================== */
+
+    .admin-bus-actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+
+    .admin-bus-actions form {
+        margin: 0;
+    }
+
+
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
+
+    .admin-empty {
+        text-align: center;
+        padding: 40px 20px;
+        color: #667085;
+    }
+
+
+    .admin-empty-icon {
+        font-size: 35px;
+        margin-bottom: 12px;
+    }
+
+
+    .admin-empty h3 {
+        margin-bottom: 8px;
+        color: #344054;
+    }
+
+
+    .admin-empty p {
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+
+    /* =====================================================
+       INFORMATION BOX
+    ===================================================== */
+
+    .admin-info {
+        background: #f0f8ff;
+        border-left: 4px solid #1769aa;
+        padding: 15px 18px;
+        margin-top: 22px;
+        color: #344054;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 900px) {
+
+        .admin-summary {
+            grid-template-columns: 1fr;
+        }
+
+
+        .admin-route-list {
+            grid-template-columns: 1fr;
+        }
+
+
+        .admin-container {
+            width: 94%;
+            padding-top: 35px;
+        }
+
+
+        .admin-header {
+            flex-direction: column;
+        }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+        .admin-section-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+
+        .admin-section-header .admin-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+
+        .admin-route-top {
+            flex-direction: column;
+        }
+
+
+        .admin-header-content h1 {
+            font-size: 28px;
+        }
+
+    }
+
+
+    @media (max-width: 500px) {
+
+        .admin-summary-card {
+            padding: 20px;
+        }
+
+
+        .admin-section-body {
+            padding: 18px;
+        }
+
+
+        .admin-section-header {
+            padding: 18px;
+        }
+
+
+        .admin-route-card {
+            padding: 17px;
+        }
+
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<header class="navbar">
+
+<!-- TRACKMOVE LOGO -->
+
+<a href="{{ url_for('home') }}" class="logo">
+
+    <div class="logo-icon">
+        TM
+    </div>
+
+    <span>
+        TrackMove
+    </span>
+
+</a>
+
+
+
+<!-- NAVIGATION -->
+
+<nav>
+
+    <a href="{{ url_for('home') }}">
+        Home
+    </a>
+
+    <a href="{{ url_for('dashboard') }}">
+        Dashboard
+    </a>
+
+    <a href="{{ url_for('track') }}">
+        Track Bus
+    </a>
+
+    <a href="{{ url_for('routes') }}">
+        Routes
+    </a>
+
+    <a href="{{ url_for('admin') }}" class="active">
+        Admin
+    </a>
+
+</nav>
+
+
+
+<!-- LOGOUT -->
+
+<div class="nav-buttons">
+
+    <a href="{{ url_for('logout') }}"
+       class="login-btn">
+
+        Logout
+
+    </a>
+
+</div>
+
+</header>
+
+<!-- =====================================================
+     ADMIN PAGE
+===================================================== -->
+
+<main class="admin-page">
+
+<div class="admin-container">
+
+
+    <!-- =================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <div class="admin-header">
+
+
+        <div class="admin-header-content">
+
+            <h1>
+                Admin Dashboard
+            </h1>
+
+            <p>
+                Manage routes, buses, drivers and journeys
+                from one place.
+            </p>
+
+        </div>
+
+
+        <div class="admin-header-icon">
+            ⚙️
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         ALERTS
+    ================================================== -->
+
+    {% if request.args.get('error') %}
+
+    <div class="admin-alert admin-alert-error">
+
+        {{ request.args.get('error') }}
+
+    </div>
+
+    {% endif %}
+
+
+    {% if request.args.get('success') %}
+
+    <div class="admin-alert admin-alert-success">
+
+        {{ request.args.get('success') }}
+
+    </div>
+
+    {% endif %}
+
+
+
+    <!-- =================================================
+         SUMMARY
+    ================================================== -->
+
+    <div class="admin-summary">
+
+
+        <!-- TOTAL ROUTES -->
+
+        <div class="admin-summary-card">
+
+            <div class="admin-summary-card-header">
+
+                <h3>
+                    Total Routes
+                </h3>
+
+                <div class="admin-summary-icon">
+                    🛣️
+                </div>
+
+            </div>
+
+            <div class="admin-summary-number">
+                {{ routes|length }}
+            </div>
+
+        </div>
+
+
+
+        <!-- TOTAL BUSES -->
+
+        <div class="admin-summary-card">
+
+            <div class="admin-summary-card-header">
+
+                <h3>
+                    Total Buses
+                </h3>
+
+                <div class="admin-summary-icon">
+                    🚌
+                </div>
+
+            </div>
+
+            <div class="admin-summary-number">
+                {{ buses|length }}
+            </div>
+
+        </div>
+
+
+
+        <!-- ACTIVE BUSES -->
+
+        <div class="admin-summary-card">
+
+            <div class="admin-summary-card-header">
+
+                <h3>
+                    Active Buses
+                </h3>
+
+                <div class="admin-summary-icon">
+                    📍
+                </div>
+
+            </div>
+
+            <div class="admin-summary-number">
+
+                {% set active_count = namespace(value=0) %}
+
+                {% for bus in buses %}
+
+                    {% if bus.status == 'Active' %}
+
+                        {% set active_count.value =
+                            active_count.value + 1 %}
+
+                    {% endif %}
+
+                {% endfor %}
+
+                {{ active_count.value }}
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         ROUTE MANAGEMENT
+    ================================================== -->
+
+    <section class="admin-section">
+
+
+        <div class="admin-section-header">
+
+
+            <div class="admin-section-title">
+
+                <h2>
+                    Route Management
+                </h2>
+
+                <p>
+                    Create, edit and delete transport routes.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('add_route') }}"
+               class="admin-btn admin-btn-primary">
+
+                + Add New Route
+
+            </a>
+
+
+        </div>
+
+
+
+        <div class="admin-section-body">
+
+
+            {% if routes %}
+
+
+            <div class="admin-route-list">
+
+
+                {% for route in routes %}
+
+
+                <div class="admin-route-card">
+
+
+                    <div class="admin-route-top">
+
+
+                        <div>
+
+                            <div class="admin-route-number">
+
+                                {{ route.route_number }}
+
+                            </div>
+
+
+                            <h3>
+
+                                {{ route.route_name }}
+
+                            </h3>
+
+                        </div>
+
+
+                        <div>
+                            🚌
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="admin-route-path">
+
+                        <strong>
+                            Route:
+                        </strong>
+
+                        {{ route.start_location }}
+
+                        →
+
+                        {{ route.destination }}
+
+                    </div>
+
+
+
+                    <div class="admin-route-actions">
+
+
+                        <!-- EDIT ROUTE -->
+
+                        <a href="{{ url_for('edit_route', route_id=route.id) }}"
+                           class="admin-btn admin-btn-secondary admin-btn-small">
+
+                            Edit Route
+
+                        </a>
+
+
+
+                        <!-- DELETE ROUTE -->
+
+                        <form method="POST"
+                              action="{{ url_for('delete_route', route_id=route.id) }}"
+                              onsubmit="return confirm('Are you sure you want to delete route {{ route.route_number }}? This action cannot be undone.');">
+
+                            <button type="submit"
+                                    class="admin-btn admin-btn-danger admin-btn-small">
+
+                                Delete Route
+
+                            </button>
+
+                        </form>
+
+
+                    </div>
+
+
+                </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <div class="admin-empty">
+
+
+                <div class="admin-empty-icon">
+                    🚌
+                </div>
+
+
+                <h3>
+                    No Routes Available
+                </h3>
+
+
+                <p>
+                    Create your first route to start adding buses.
+                </p>
+
+
+                <a href="{{ url_for('add_route') }}"
+                   class="admin-btn admin-btn-primary">
+
+                    + Create Route
+
+                </a>
+
+
+            </div>
+
+
+            {% endif %}
+
+
+
+            <div class="admin-info">
+
+                <strong>
+                    Route Management:
+                </strong>
+
+                You can create routes with multiple stops.
+                After creating a route, it will automatically
+                appear in the Add Bus page for selection.
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         BUS MANAGEMENT
+    ================================================== -->
+
+    <section class="admin-section">
+
+
+        <div class="admin-section-header">
+
+
+            <div class="admin-section-title">
+
+                <h2>
+                    Bus Management
+                </h2>
+
+                <p>
+                    Manage buses, drivers, routes and journey status.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('add_bus') }}"
+               class="admin-btn admin-btn-primary">
+
+                + Add New Bus
+
+            </a>
+
+
+        </div>
+
+
+
+        <div class="admin-section-body">
+
+
+            {% if buses %}
+
+
+            <div class="admin-table-wrapper">
+
+
+                <table class="admin-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Bus Number
+                            </th>
+
+                            <th>
+                                Driver
+                            </th>
+
+                            <th>
+                                Route
+                            </th>
+
+                            <th>
+                                Current Stop
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                        {% for bus in buses %}
+
+
+                        <tr>
+
+
+                            <!-- BUS NUMBER -->
+
+                            <td>
+
+                                <span class="admin-bus-number">
+
+                                    {{ bus.bus_number }}
+
+                                </span>
+
+                            </td>
+
+
+
+                            <!-- DRIVER -->
+
+                            <td>
+
+                                {% if bus.driver_name %}
+
+                                    {{ bus.driver_name }}
+
+                                {% else %}
+
+                                    <span style="color:#98a2b3;">
+
+                                        Not assigned
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- ROUTE -->
+
+                            <td>
+
+                                <div class="admin-route-info">
+
+                                    <strong>
+
+                                        {{ bus.route_number }}
+
+                                    </strong>
+
+                                    <br>
+
+                                    <small>
+
+                                        {{ bus.start_location }}
+
+                                        →
+
+                                        {{ bus.destination }}
+
+                                    </small>
+
+                                </div>
+
+                            </td>
+
+
+
+                            <!-- CURRENT STOP -->
+
+                            <td>
+
+                                {% if bus.current_stop_name %}
+
+                                    {{ bus.current_stop_name }}
+
+                                {% elif bus.current_stop %}
+
+                                    Stop {{ bus.current_stop }}
+
+                                {% else %}
+
+                                    <span style="color:#98a2b3;">
+
+                                        Not started
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+
+                                {% if bus.status == 'Active' %}
+
+                                    <span class="admin-status admin-status-active">
+
+                                        Active
+
+                                    </span>
+
+
+                                {% elif bus.status == 'Available' %}
+
+                                    <span class="admin-status admin-status-available">
+
+                                        Available
+
+                                    </span>
+
+
+                                {% elif bus.status == 'Inactive' %}
+
+                                    <span class="admin-status admin-status-inactive">
+
+                                        Inactive
+
+                                    </span>
+
+
+                                {% else %}
+
+                                    <span class="admin-status admin-status-default">
+
+                                        {{ bus.status }}
+
+                                    </span>
+
+                                {% endif %}
+
+
+                            </td>
+
+
+
+                            <!-- ACTIONS -->
+
+                            <td>
+
+
+                                <div class="admin-bus-actions">
+
+
+                                    {% if bus.status == 'Active' %}
+
+
+                                        <!-- STOP BUS -->
+
+                                        <form method="POST"
+                                              action="{{ url_for('stop_bus', bus_id=bus.id) }}">
+
+                                            <button type="submit"
+                                                    class="admin-btn admin-btn-warning admin-btn-small">
+
+                                                Stop
+
+                                            </button>
+
+                                        </form>
+
+
+                                    {% else %}
+
+
+                                        <!-- START BUS -->
+
+                                        <form method="POST"
+                                              action="{{ url_for('start_bus', bus_id=bus.id) }}">
+
+                                            <button type="submit"
+                                                    class="admin-btn admin-btn-success admin-btn-small">
+
+                                                Start
+
+                                            </button>
+
+                                        </form>
+
+
+                                    {% endif %}
+
+
+
+                                    <!-- EDIT BUS -->
+
+                                    <a href="{{ url_for('edit_bus', bus_id=bus.id) }}"
+                                       class="admin-btn admin-btn-secondary admin-btn-small">
+
+                                        Edit
+
+                                    </a>
+
+
+
+                                    <!-- DELETE BUS -->
+
+                                    <form method="POST"
+                                          action="{{ url_for('delete_bus', bus_id=bus.id) }}"
+                                          onsubmit="return confirm('Are you sure you want to delete bus {{ bus.bus_number }}? This action cannot be undone.');">
+
+                                        <button type="submit"
+                                                class="admin-btn admin-btn-danger admin-btn-small">
+
+                                            Delete
+
+                                        </button>
+
+                                    </form>
+
+
+                                </div>
+
+
+                            </td>
+
+
+                        </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <div class="admin-empty">
+
+
+                <div class="admin-empty-icon">
+                    🚌
+                </div>
+
+
+                <h3>
+                    No Buses Available
+                </h3>
+
+
+                <p>
+                    Add a bus and assign it to one of your routes.
+                </p>
+
+
+                <a href="{{ url_for('add_bus') }}"
+                   class="admin-btn admin-btn-primary">
+
+                    + Add New Bus
+
+                </a>
+
+
+            </div>
+
+
+            {% endif %}
+
+
+
+            <div class="admin-info">
+
+                <strong>
+                    Bus Management:
+                </strong>
+
+                New buses are initially Available at the first stop
+                of their selected route. You can edit their details
+                or remove them when they are no longer needed.
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+</main>
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+<div class="footer-main">
+
+
+    <!-- BRAND -->
+
+    <div class="footer-brand">
+
+
+        <a href="{{ url_for('home') }}" class="logo">
+
+            <div class="logo-icon">
+                TM
+            </div>
+
+            <span>
+                TrackMove
+            </span>
+
+        </a>
+
+
+        <p>
+
+            A public transport tracking platform
+            designed to make everyday travel
+            simpler and smarter.
+
+        </p>
+
+
+    </div>
+
+
+
+    <!-- PLATFORM -->
+
+    <div class="footer-column">
+
+
+        <h4>
+            Platform
+        </h4>
+
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+
+        <a href="{{ url_for('track') }}">
+            Track Bus
+        </a>
+
+
+        <a href="{{ url_for('routes') }}">
+            Routes
+        </a>
+
+
+    </div>
+
+
+
+    <!-- ACCOUNT -->
+
+    <div class="footer-column">
+
+
+        <h4>
+            Account
+        </h4>
+
+
+        <a href="{{ url_for('profile') }}">
+            Profile
+        </a>
+
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+
+    </div>
+
+
+
+    <!-- INFORMATION -->
+
+    <div class="footer-column">
+
+
+        <h4>
+            Information
+        </h4>
+
+
+        <a href="{{ url_for('contact') }}">
+            Contact Us
+        </a>
+
+
+        <a href="{{ url_for('privacy') }}">
+            Privacy Policy
+        </a>
+
+
+        <a href="{{ url_for('terms') }}">
+            Terms of Service
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- COPYRIGHT -->
+
+<div class="footer-bottom">
+
+
+    <p>
+        © 2026 TrackMove. All rights reserved.
+    </p>
+
+
+    <p>
+        Public Transport Tracking System
+    </p>
+
+
+</div>
+
+</footer>
+
+</body>
+
+</html>

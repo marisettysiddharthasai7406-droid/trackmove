@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Add Bus | TrackMove</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            TM
+        </div>
+
+        <span>
+            TrackMove
+        </span>
+
+    </div>
+
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/track">
+            Track Bus
+        </a>
+
+        <a href="/admin" class="active">
+            Admin
+        </a>
+
+    </nav>
+
+
+    <div class="nav-buttons">
+
+        <a href="/admin/logout"
+           class="login-btn">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<main class="dashboard-page">
+
+
+    <!-- PAGE HEADER -->
+
+    <section class="track-header">
+
+        <div>
+
+            <p class="dashboard-label">
+                BUS MANAGEMENT
+            </p>
+
+            <h1>
+                Add New Bus
+            </h1>
+
+            <p>
+                Register a bus and assign it to a predefined TrackMove route.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- REGISTRATION FORM -->
+
+    <section class="bus-information">
+
+
+        <div class="bus-info-header">
+
+            <div>
+
+                <p class="dashboard-label">
+                    BUS REGISTRATION
+                </p>
+
+                <h2>
+                    Enter Bus Details
+                </h2>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ERROR MESSAGE -->
+
+        {% if error %}
+
+        <div class="error-message">
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+
+        <form method="POST">
+
+
+            <!-- BUS NUMBER -->
+
+            <div class="form-group">
+
+                <label for="bus_number">
+                    Bus Number
+                </label>
+
+                <input
+                    type="text"
+                    id="bus_number"
+                    name="bus_number"
+                    placeholder="Example: TM-102"
+                    maxlength="20"
+                    autocomplete="off"
+                    required>
+
+                <small>
+                    Enter a unique bus number.
+                </small>
+
+            </div>
+
+
+
+            <!-- DRIVER -->
+
+            <div class="form-group">
+
+                <label for="driver_name">
+                    Driver Name
+                </label>
+
+                <input
+                    type="text"
+                    id="driver_name"
+                    name="driver_name"
+                    placeholder="Enter driver name"
+                    maxlength="100"
+                    required>
+
+            </div>
+
+
+
+            <!-- ROUTE -->
+
+            <div class="form-group">
+
+                <label for="route_id">
+                    Select Route
+                </label>
+
+                <select
+                    id="route_id"
+                    name="route_id"
+                    required>
+
+                    <option value="" selected disabled>
+                        Select a predefined route
+                    </option>
+
+
+                    {% for route in routes %}
+
+                    <option value="{{ route[0] }}">
+
+                        {{ route[1] }} -
+                        {{ route[2] }} → {{ route[3] }}
+
+                    </option>
+
+                    {% endfor %}
+
+
+                </select>
+
+            </div>
+
+
+
+            <!-- INFORMATION -->
+
+            <div class="form-help-box">
+
+                <strong>
+                    Journey Information
+                </strong>
+
+                <p>
+                    New buses start as
+                    <b>Available</b>
+                    at the first stop of the selected route.
+                </p>
+
+                <p>
+                    The admin can start the bus when it is ready.
+                    After reaching the final stop, the bus becomes
+                    <b>Available</b> and can be started for the return journey.
+                </p>
+
+            </div>
+
+
+
+            <!-- ACTIONS -->
+
+            <div class="form-actions">
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Register Bus
+
+                </button>
+
+
+                <a
+                    href="/admin"
+                    class="secondary-btn">
+
+                    Cancel
+
+                </a>
+
+
+            </div>
+
+
+        </form>
+
+
+    </section>
+
+
+</main>
+
+
+
+<footer>
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 TrackMove. All rights reserved.
+        </p>
+
+        <p>
+            Public Transport Tracking System
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<style>
+
+    .form-help-box {
+
+        margin: 20px 0;
+
+        padding: 18px 20px;
+
+        background: #f5f9fd;
+
+        border-left: 4px solid #1769aa;
+
+        border-radius: 6px;
+
+        color: #344054;
+
+    }
+
+
+    .form-help-box strong {
+
+        display: block;
+
+        margin-bottom: 8px;
+
+        color: #172033;
+
+    }
+
+
+    .form-help-box p {
+
+        margin: 6px 0;
+
+        line-height: 1.5;
+
+        font-size: 14px;
+
+    }
+
+
+    .form-group small {
+
+        display: block;
+
+        margin-top: 5px;
+
+        color: #667085;
+
+        font-size: 12px;
+
+    }
+
+
+    .error-message {
+
+        margin-bottom: 20px;
+
+        padding: 12px 15px;
+
+        background: #fff1f1;
+
+        border: 1px solid #f2b8b8;
+
+        border-radius: 6px;
+
+        color: #b42318;
+
+        font-weight: 600;
+
+    }
+
+
+    .form-actions {
+
+        display: flex;
+
+        gap: 12px;
+
+        align-items: center;
+
+        margin-top: 25px;
+
+    }
+
+
+    .form-actions a {
+
+        text-decoration: none;
+
+        display: inline-block;
+
+    }
+
+</style>
+
+
+</body>
+
+</html>
