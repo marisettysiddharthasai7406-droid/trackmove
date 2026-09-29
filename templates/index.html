@@ -1,1 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>TrackMove | Public Transport Tracking</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     TOP NAVIGATION
+===================================================== -->
+
+<header class="navbar">
+
+
+    <!-- TRACKMOVE LOGO -->
+
+    <a href="/" class="logo">
+
+        <div class="logo-icon">
+            TM
+        </div>
+
+        <span>
+            TrackMove
+        </span>
+
+    </a>
+
+
+
+    <!-- NAVIGATION -->
+
+    <nav>
+
+        <a href="/" class="active">
+            Home
+        </a>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/routes">
+            Routes
+        </a>
+
+        <a href="/admin">
+            Admin
+        </a>
+
+    </nav>
+
+
+
+    <!-- LOGIN / LOGOUT -->
+
+    <div class="nav-buttons">
+
+        {% if session.get("user_id") %}
+
+            <a href="/logout"
+               class="signup-btn">
+
+                Logout
+
+            </a>
+
+        {% else %}
+
+            <a href="/login"
+               class="login-btn">
+
+                Login
+
+            </a>
+
+            <a href="/register"
+               class="signup-btn">
+
+                Create Account
+
+            </a>
+
+        {% endif %}
+
+    </div>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main>
+
+
+    <!-- =================================================
+         HERO SECTION
+    ================================================= -->
+
+    <section class="hero">
+
+
+        <!-- LEFT SIDE -->
+
+        <div class="hero-content">
+
+
+            <div class="small-title">
+
+                SMART PUBLIC TRANSPORTATION
+
+            </div>
+
+
+            <h1>
+
+                Move smarter.
+
+                <br>
+
+                <span>
+                    Travel better.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Track buses, discover routes and check
+                estimated arrival times — all in one
+                simple platform.
+
+            </p>
+
+
+
+            <!-- HERO BUTTONS -->
+
+            <div class="hero-buttons">
+
+
+                <!-- Track Bus -->
+
+                <a href="/track"
+                   class="primary-btn">
+
+                    Track a Bus
+
+                </a>
+
+
+                <!-- Routes -->
+
+                <a href="/routes"
+                   class="secondary-btn">
+
+                    Explore Routes
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- RIGHT SIDE IMAGE -->
+
+        <div class="hero-image">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/trackmove-transport.png'
+                ) }}"
+                alt="TrackMove Public Transportation">
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         FEATURES
+    ================================================= -->
+
+    <section class="features">
+
+
+        <!-- LIVE TRACKING -->
+
+        <div class="feature-card">
+
+
+            <div class="feature-icon">
+                LIVE
+            </div>
+
+
+            <h3>
+                Live Tracking
+            </h3>
+
+
+            <p>
+
+                Track available buses and view their
+                current locations.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!-- SMART ROUTES -->
+
+        <div class="feature-card">
+
+
+            <div class="feature-icon">
+                MAP
+            </div>
+
+
+            <h3>
+                Smart Routes
+            </h3>
+
+
+            <p>
+
+                Find convenient routes and explore
+                your transportation options.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!-- ETA -->
+
+        <div class="feature-card">
+
+
+            <div class="feature-icon">
+                ETA
+            </div>
+
+
+            <h3>
+                Arrival Time
+            </h3>
+
+
+            <p>
+
+                Check estimated bus arrival times
+                before starting your journey.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!-- RELIABLE -->
+
+        <div class="feature-card">
+
+
+            <div class="feature-icon">
+                SAFE
+            </div>
+
+
+            <h3>
+                Easy & Reliable
+            </h3>
+
+
+            <p>
+
+                Access important transportation
+                information from one platform.
+
+            </p>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         CALL TO ACTION
+    ================================================= -->
+
+    <section class="cta">
+
+
+        <div>
+
+            <h2>
+                Ready to move?
+            </h2>
+
+
+            <p>
+
+                Create your TrackMove account and
+                start exploring smarter transportation.
+
+            </p>
+
+        </div>
+
+
+
+        <a href="/register"
+           class="cta-button">
+
+            Get Started
+
+        </a>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+
+    <div class="footer-main">
+
+
+        <!-- BRAND -->
+
+        <div class="footer-brand">
+
+
+            <a href="/" class="logo">
+
+                <div class="logo-icon">
+                    TM
+                </div>
+
+                <span>
+                    TrackMove
+                </span>
+
+            </a>
+
+
+            <p>
+
+                A public transport tracking platform
+                designed to make everyday travel
+                simpler and smarter.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!-- PLATFORM -->
+
+        <div class="footer-column">
+
+
+            <h4>
+                Platform
+            </h4>
+
+
+            <a href="/">
+                Home
+            </a>
+
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+
+            <a href="/track">
+                Track Bus
+            </a>
+
+
+            <a href="/routes">
+                Routes
+            </a>
+
+
+        </div>
+
+
+
+        <!-- ACCOUNT -->
+
+        <div class="footer-column">
+
+
+            <h4>
+                Account
+            </h4>
+
+
+            <a href="/login">
+                Login
+            </a>
+
+
+            <a href="/register">
+                Create Account
+            </a>
+
+
+            <a href="/profile">
+                Profile
+            </a>
+
+
+            <a href="/logout">
+                Logout
+            </a>
+
+
+        </div>
+
+
+
+        <!-- INFORMATION -->
+
+        <div class="footer-column">
+
+
+            <h4>
+                Information
+            </h4>
+
+
+            <a href="/contact">
+                Contact Us
+            </a>
+
+
+            <a href="/privacy">
+                Privacy Policy
+            </a>
+
+
+            <a href="/terms">
+                Terms of Service
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- COPYRIGHT -->
+
+    <div class="footer-bottom">
+
+
+        <p>
+
+            © 2026 TrackMove.
+            All rights reserved.
+
+        </p>
+
+
+        <p>
+
+            Public Transport Tracking System
+
+        </p>
+
+
+    </div>
+
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+    src="{{ url_for('static', filename='js/script.js') }}">
+</script>
+
+
+</body>
+
+</html>
